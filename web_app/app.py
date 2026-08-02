@@ -80,10 +80,10 @@ if __name__ == '__main__':
 
     standards_count = len(list(STANDARDS_DIR.glob('*'))) if STANDARDS_DIR.exists() else 0
     print(f"  Standards: {standards_count} files")
-    print(f"  URL: http://localhost:5890")
+    port = int(os.environ.get('PORT', 5890))
+    print(f"  URL: http://localhost:{port}")
     print("=" * 60)
 
     app = create_app()
-    # 调试模式默认关闭（对局域网分享更安全稳定）；开发时设置环境变量 FLASK_DEBUG=1 开启热重载
     debug = os.environ.get('FLASK_DEBUG', '0') == '1'
-    app.run(host='0.0.0.0', port=5890, debug=debug, threaded=True)
+    app.run(host='0.0.0.0', port=port, debug=debug, threaded=True)

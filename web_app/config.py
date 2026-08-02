@@ -6,7 +6,9 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 WEB_DIR = Path(__file__).resolve().parent
-INSTANCE_DIR = WEB_DIR / 'instance'
+# Render 从 web_app/ 目录运行，需要判断
+IS_RENDER = os.environ.get('RENDER', '') == '1'
+INSTANCE_DIR = WEB_DIR / 'instance' if IS_RENDER else WEB_DIR / 'instance'
 INSTANCE_DIR.mkdir(exist_ok=True)
 
 STANDARDS_DIR = BASE_DIR / "岗位标准"
