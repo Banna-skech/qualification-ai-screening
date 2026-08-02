@@ -1,28 +1,50 @@
 """
-AI 服务 — Anthropic/DeepSeek 客户端封装
+AI 服务 — Anthropic/DeepSeek 客户端封装（懒加载，支持演示模式）
 """
 from anthropic import Anthropic
 
 from config import Config
 from utils.http_client import create_http_client
 
-# 全局客户端实例
-_http_client = create_http_client()
-_client = Anthropic(
-    base_url=Config.AI_BASE_URL,
-    api_key=Config.DEEPSEEK_API_KEY,
-    http_client=_http_client,
-)
+# 全局客户端实例（懒初始化）
+_client = None
+
+
+def _ensure_client():
+    """懒初始化 AI 客户端，无 API Key 时报错"""
+    global _client
+    if _client is not None:
+        return _client
+
+    api_key = Config.DEEPSEEK_API_KEY
+    if not api_key:
+        raise RuntimeError(
+            "未配置 DEEPSEEK_API_KEY 环境变量，AI 分析功能不可用。"
+            "\n请在系统设置中配置 API Key，或设置环境变量后重启服务。"
+        )
+
+    _http_client = create_http_client()
+    _client = Anthropic(
+        base_url=Config.AI_BASE_URL,
+        api_key=api_key,
+        http_client=_http_client,
+    )
+    return _client
 
 
 def get_client() -> Anthropic:
     """获取 Anthropic 客户端（DeepSeek 兼容模式）"""
-    return _client
+    return _ensure_client()
+
+
+def has_api_key() -> bool:
+    """检查是否已配置 API Key"""
+    return bool(Config.DEEPSEEK_API_KEY)
 
 
 def reload_client(api_key=None, base_url=None):
     """重新初始化客户端（修改 API key 后调用）"""
-    global _client, _http_client
+    global _client
     _http_client = create_http_client()
     _client = Anthropic(
         base_url=base_url or Config.AI_BASE_URL,
@@ -33,7 +55,8 @@ def reload_client(api_key=None, base_url=None):
 
 def stream_analysis(system_prompt: str, user_prompt: str, model=None, max_tokens=None, temperature=None):
     """流式调用 AI 分析，返回 text_stream 迭代器"""
-    with _client.messages.stream(
+    client = _ensure_client()
+    with client.messages.stream(
         model=model or Config.AI_MODEL,
         max_tokens=max_tokens or Config.AI_MAX_TOKENS,
         temperature=temperature or Config.AI_TEMPERATURE,
@@ -47,7 +70,8 @@ def stream_analysis(system_prompt: str, user_prompt: str, model=None, max_tokens
 
 def call_analysis(system_prompt: str, user_prompt: str, model=None, max_tokens=None, temperature=None) -> str:
     """非流式调用 AI 分析，返回完整文本"""
-    msg = _client.messages.create(
+    client = _ensure_client()
+    msg = client.messages.create(
         model=model or Config.AI_MODEL,
         max_tokens=max_tokens or Config.AI_MAX_TOKENS,
         temperature=temperature or Config.AI_TEMPERATURE,
@@ -55,7 +79,6 @@ def call_analysis(system_prompt: str, user_prompt: str, model=None, max_tokens=N
         system=system_prompt,
         messages=[{"role": "user", "content": user_prompt}],
     )
-    # 提取文本内容
     for block in msg.content:
         if hasattr(block, 'text'):
             return block.text

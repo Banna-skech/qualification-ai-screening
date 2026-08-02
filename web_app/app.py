@@ -64,7 +64,8 @@ def create_app():
 
         return render_template('index.html',
                                standards=registry["岗位标准清单"],
-                               stats=stats)
+                               stats=stats,
+                               has_api_key=bool(Config.DEEPSEEK_API_KEY))
 
     return app
 
