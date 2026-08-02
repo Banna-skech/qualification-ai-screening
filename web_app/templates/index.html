@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>任职资格认证 AI 初筛系统 v2.0</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- ========== 左侧导航栏 ========== -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <span class="sidebar-logo">🏆</span>
+    <div class="sidebar-title">
+      <span>任职资格认证材料智能审核系统</span>
+      <span class="sidebar-subtitle">AI 初筛系统 v2.0</span>
+    </div>
+  </div>
+
+  <div class="sidebar-nav">
+    <a class="nav-link active" data-page="dashboard" href="#dashboard">
+      <span class="nav-icon">📊</span> 仪表盘
+    </a>
+    <a class="nav-link" data-page="assessment" href="#assessment">
+      <span class="nav-icon">📑</span> 新认证
+    </a>
+    <a class="nav-link" data-page="reports" href="#reports">
+      <span class="nav-icon">📋</span> 报告管理
+      <span class="nav-badge" id="navReportCount">0</span>
+    </a>
+    <a class="nav-link" data-page="standards" href="#standards">
+      <span class="nav-icon">📏</span> 标准管理
+    </a>
+    <a class="nav-link" data-page="employees" href="#employees">
+      <span class="nav-icon">👥</span> 员工管理
+    </a>
+    <a class="nav-link" data-page="batch" href="#batch">
+      <span class="nav-icon">📦</span> 批量处理
+    </a>
+  </div>
+
+  <div class="sidebar-footer">
+    <a class="nav-link" data-page="settings" href="#settings">
+      <span class="nav-icon">⚙️</span> 设置
+    </a>
+  </div>
+</nav>
+
+<!-- ========== 主内容区 ========== -->
+<main class="main-content" id="pageContent">
+  <!-- 动态加载页面内容 -->
+</main>
+
+<!-- ========== Toast 容器 ========== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ========== 全局 Modal ========== -->
+<div class="modal-overlay" id="globalModal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modalTitle"></h3>
+      <button class="modal-close" onclick="Modal.hide()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer" id="modalFooter"></div>
+  </div>
+</div>
+
+<script src="/static/js/utils.js"></script>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/components/toast.js"></script>
+<script src="/static/js/components/modal.js"></script>
+<script src="/static/js/components/table.js"></script>
+<script src="/static/js/components/chart.js"></script>
+<script src="/static/js/components/markdown.js"></script>
+<script src="/static/js/components/spinner.js"></script>
+<script src="/static/js/components/searchselect.js"></script>
+<script src="/static/js/pages/dashboard.js"></script>
+<script src="/static/js/pages/assessment.js"></script>
+<script src="/static/js/pages/reports.js"></script>
+<script src="/static/js/pages/standards.js"></script>
+<script src="/static/js/pages/employees.js"></script>
+<script src="/static/js/pages/batch.js"></script>
+<script src="/static/js/pages/settings.js"></script>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
