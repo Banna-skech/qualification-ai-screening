@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: qualification-ai-screening
+    runtime: python
+    repo: https://github.com/Banna-skech/qualification-ai-screening
+    plan: free
+    rootDir: web_app
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:create_app() --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    envVars:
+      - key: DEEPSEEK_API_KEY
+        sync: false
+        value: ""
+      - key: FLASK_DEBUG
+        value: "0"
+      - key: AI_MODEL
+        value: deepseek-V4-pro
