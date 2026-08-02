@@ -42,19 +42,19 @@ const V2_STANDARDS = STD_REGISTRY.map(s => ({
 }));
 
 const REPORTS = [
-  {id:1,report_type:'assessment',employee_name:'王红波',employee_department:'手电事业部-产品部',applied_position:'GTM',applied_level:'S4-3',total_score:7.2,conclusion:'conditional',status:'final',created_at:'2026-07-15',raw_markdown:'',standard_name:null},
-  {id:2,report_type:'assessment',employee_name:'张明',employee_department:'研发事业部-结构部',applied_position:'结构工程师',applied_level:'T3-2',total_score:8.5,conclusion:'pass',status:'final',created_at:'2026-07-10',raw_markdown:'',standard_name:null},
-  {id:3,report_type:'assessment',employee_name:'李婷',employee_department:'电商事业部',applied_position:'MKT',applied_level:'S3-1',total_score:5.8,conclusion:'fail',status:'final',created_at:'2026-07-08',raw_markdown:'',standard_name:null},
-  {id:4,report_type:'assessment',employee_name:'赵磊',employee_department:'研发事业部-产品部',applied_position:'产品经理（硬件）',applied_level:'T4-2',total_score:9.1,conclusion:'pass',status:'final',created_at:'2026-06-28',raw_markdown:'',standard_name:null},
-  {id:5,report_type:'assessment',employee_name:'陈芳',employee_department:'品质中心',applied_position:'测试工程师',applied_level:'T3-2',total_score:6.5,conclusion:'conditional',status:'final',created_at:'2026-06-20',raw_markdown:'',standard_name:null},
+  {id:1,report_type:'assessment',employee_name:'王某某',employee_department:'手电事业部-产品部',applied_position:'GTM',applied_level:'S4-3',total_score:7.2,conclusion:'conditional',status:'final',created_at:'2026-07-15',raw_markdown:'',standard_name:null},
+  {id:2,report_type:'assessment',employee_name:'张某某',employee_department:'研发事业部-结构部',applied_position:'结构工程师',applied_level:'T3-2',total_score:8.5,conclusion:'pass',status:'final',created_at:'2026-07-10',raw_markdown:'',standard_name:null},
+  {id:3,report_type:'assessment',employee_name:'李某某',employee_department:'电商事业部',applied_position:'MKT',applied_level:'S3-1',total_score:5.8,conclusion:'fail',status:'final',created_at:'2026-07-08',raw_markdown:'',standard_name:null},
+  {id:4,report_type:'assessment',employee_name:'赵某某',employee_department:'研发事业部-产品部',applied_position:'产品经理（硬件）',applied_level:'T4-2',total_score:9.1,conclusion:'pass',status:'final',created_at:'2026-06-28',raw_markdown:'',standard_name:null},
+  {id:5,report_type:'assessment',employee_name:'陈某某',employee_department:'品质中心',applied_position:'测试工程师',applied_level:'T3-2',total_score:6.5,conclusion:'conditional',status:'final',created_at:'2026-06-20',raw_markdown:'',standard_name:null},
 ];
 
 const EMPLOYEES = [
-  {id:1,name:'王红波',department:'手电事业部-产品部',position:'高级GTM',education:'本科',years_experience:8,years_in_current:4,email:'wanghb@oly.com',is_active:true,created_at:'2025-03-01',report_count:2},
-  {id:2,name:'张明',department:'研发事业部-结构部',position:'结构工程师',education:'硕士',years_experience:5,years_in_current:3,email:'zhangming@oly.com',is_active:true,created_at:'2025-06-15',report_count:1},
-  {id:3,name:'李婷',department:'电商事业部',position:'MKT专员',education:'本科',years_experience:3,years_in_current:1.5,email:'liting@oly.com',is_active:true,created_at:'2026-01-10',report_count:1},
-  {id:4,name:'赵磊',department:'研发事业部-产品部',position:'高级产品经理',education:'硕士',years_experience:10,years_in_current:6,email:'zhaolei@oly.com',is_active:true,created_at:'2024-08-20',report_count:3},
-  {id:5,name:'陈芳',department:'品质中心',position:'测试工程师',education:'本科',years_experience:6,years_in_current:2,email:'chenfang@oly.com',is_active:true,created_at:'2025-09-01',report_count:2},
+  {id:1,name:'王某某',department:'手电事业部-产品部',position:'高级GTM',education:'本科',years_experience:8,years_in_current:4,email:'wanghb@example.com',is_active:true,created_at:'2025-03-01',report_count:2},
+  {id:2,name:'张某某',department:'研发事业部-结构部',position:'结构工程师',education:'硕士',years_experience:5,years_in_current:3,email:'zhangming@example.com',is_active:true,created_at:'2025-06-15',report_count:1},
+  {id:3,name:'李某某',department:'电商事业部',position:'MKT专员',education:'本科',years_experience:3,years_in_current:1.5,email:'liting@example.com',is_active:true,created_at:'2026-01-10',report_count:1},
+  {id:4,name:'赵某某',department:'研发事业部-产品部',position:'高级产品经理',education:'硕士',years_experience:10,years_in_current:6,email:'zhaolei@example.com',is_active:true,created_at:'2024-08-20',report_count:3},
+  {id:5,name:'陈某某',department:'品质中心',position:'测试工程师',education:'本科',years_experience:6,years_in_current:2,email:'chenfang@example.com',is_active:true,created_at:'2025-09-01',report_count:2},
 ];
 
 const PASS_RATE_TREND = [{month:'2026-01',pass_rate:62},{month:'2026-02',pass_rate:58},{month:'2026-03',pass_rate:71},{month:'2026-04',pass_rate:65},{month:'2026-05',pass_rate:74},{month:'2026-06',pass_rate:68},{month:'2026-07',pass_rate:60}];
@@ -67,7 +67,7 @@ const DEMO_REPORT_MD = `# 🏆 任职资格认证初审报告
 
 | 项目 | 内容 |
 |------|------|
-| 员工姓名 | 王红波 |
+| 员工姓名 | 王某某 |
 | 所在部门 | 手电事业部-产品部 |
 | 当前岗位 | 高级GTM |
 | 申报岗位 | GTM |
@@ -99,7 +99,7 @@ const DEMO_REPORT_MD = `# 🏆 任职资格认证初审报告
 
 | # | 类型 | 标准要求摘要 | 举证内容摘要 | 覆盖 | 问题说明 |
 |----|------|-------------|-------------|------|----------|
-| 1.1 | 关键成果 | 参与公司级SP/BP制定，指导产品路线图 | 手电系列用户分群；Baton系列定位与组合策略 | ✅ | 路线图完整，覆盖6款新品，时间节点明确 |
+| 1.1 | 关键成果 | 参与公司级SP/BP制定，指导产品路线图 | 手电系列用户分群；Pro系列定位与组合策略 | ✅ | 路线图完整，覆盖6款新品，时间节点明确 |
 | 1.2 | 关键行为 | 输出年度市场战略规划文档 | PPT第5页：2025-2026市场战略规划 v2.0 | ✅ | 文档结构规范清晰，评审记录完整 |
 
 **本职责得分：2/2** — 市场战略规划方面举证完整，有数据支撑且文档规范。
@@ -213,7 +213,7 @@ window.API = {
     await delay();
     if (url === '/api/analyze') return {success:true};
     if (url === '/api/upload-ppt' || url.indexOf('/api/upload')===0) {
-      return {full_text:'员工姓名：王红波\n所在部门：手电事业部-产品部\n申报岗位：GTM\n申报级别：S4-3\n\n举证材料摘要',emp_info:{'员工姓名':'王红波','所在部门':'手电事业部-产品部','申报岗位':'GTM','申报级别':'S4-3'},matched_standards:[{id:'gtm',岗位名称:'GTM',序列:'S序列',覆盖部门:['手电事业部']},{id:'mkt',岗位名称:'MKT',序列:'S序列',覆盖部门:[]}]};
+      return {full_text:'员工姓名：王某某\n所在部门：产品事业部\n申报岗位：GTM\n申报级别：S4-3\n\n举证材料摘要',emp_info:{'员工姓名':'王某某','所在部门':'产品事业部','申报岗位':'GTM','申报级别':'S4-3'},matched_standards:[{id:'gtm',岗位名称:'GTM',序列:'S序列',覆盖部门:['手电事业部']},{id:'mkt',岗位名称:'MKT',序列:'S序列',覆盖部门:[]}]};
     }
     if (url.indexOf('/api/v2/standards/sync')>=0 || url.indexOf('/api/v2/standards/refresh')>=0) return {success:true,message:'同步完成（演示模式）',synced:0,updated:0};
     if (url === '/api/v2/standards/extract-summaries') return {success:true,message:'已提取摘要（演示版）',updated:V2_STANDARDS.length};
