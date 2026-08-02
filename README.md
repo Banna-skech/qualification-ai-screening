@@ -17,31 +17,23 @@
 
 ## 🚀 快速开始
 
-### 环境要求
+### 在线演示（推荐）
 
-- Python 3.10+
-- DeepSeek API Key（[申请地址](https://platform.deepseek.com/)）
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Banna-skech/qualification-ai-screening)
 
-### 安装
+> 点击上方按钮，一键免费部署到 Render。无需配置 API Key 即可浏览完整系统界面。
+
+### 本地运行
 
 ```bash
-# 1. 克隆项目
-git clone https://github.com/YOUR_USERNAME/qualification-ai-screening.git
-cd qualification-ai-screening
-
-# 2. 安装依赖
-pip install -r web_app/requirements.txt
-
-# 3. 配置环境变量
-cp web_app/.env.example .env
-# 编辑 .env 文件，填入你的 DEEPSEEK_API_KEY
-
-# 4. 启动服务
-cd web_app
+git clone https://github.com/Banna-skech/qualification-ai-screening.git
+cd qualification-ai-screening/web_app
+pip install -r requirements.txt
 python app.py
 ```
+浏览器访问 `http://localhost:5890`。
 
-浏览器访问 `http://localhost:5890` 即可使用。
+> 💡 如需启用 AI 分析功能，设置环境变量 `DEEPSEEK_API_KEY=你的密钥`。
 
 ### 添加岗位标准
 
