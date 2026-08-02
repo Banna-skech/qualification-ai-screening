@@ -3,386 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>任职资格认证 AI 初筛系统 — Live Demo</title>
+<title>任职资格认证 AI 初筛系统 v2.0</title>
 <link rel="stylesheet" href="static/css/style.css">
 <style>
-/* Demo overlay styles */
-body { margin:0; font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-serif; }
-.demo-badge { position:fixed; top:12px; right:12px; z-index:9999; background:#f97316; color:#fff; padding:6px 14px; border-radius:20px; font-size:12px; font-weight:600; letter-spacing:0.5px; }
-.page-header { padding:24px 32px 16px; border-bottom:1px solid #e5e7eb; }
-.page-header h2 { margin:0 0 4px; font-size:22px; }
-.page-header p { margin:0; color:#6b7280; font-size:14px; }
-.card { background:#fff; border-radius:12px; padding:20px; margin:16px; box-shadow:0 1px 3px rgba(0,0,0,.08); }
-.flex-cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:0; }
-.stat-num { font-size:36px; font-weight:700; }
-.stat-label { font-size:13px; color:#6b7280; margin-top:4px; }
-.demo-section { padding:16px 32px; }
-.badge { display:inline-block; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:600; }
-.badge-primary { background:#eff6ff; color:#2563eb; }
-.badge-success { background:#f0fdf4; color:#16a34a; }
-.badge-warning { background:#fffbeb; color:#d97706; }
-table { width:100%; border-collapse:collapse; font-size:13px; }
-th, td { text-align:left; padding:10px 12px; border-bottom:1px solid #f3f4f6; }
-th { background:#f9fafb; font-weight:600; color:#374151; font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
-.upload-zone { border:2px dashed #d1d5db; border-radius:12px; padding:32px; text-align:center; cursor:pointer; transition:all .2s; }
-.upload-zone:hover { border-color:#2563eb; background:#f8faff; }
-.upload-icon { font-size:40px; margin-bottom:8px; }
-.upload-text strong { display:block; margin-bottom:4px; }
-.upload-text span { font-size:13px; color:#9ca3af; }
-#analysisResult { margin-top:20px; max-height:60vh; overflow-y:auto; background:#fafafa; border-radius:12px; padding:20px; font-size:13px; line-height:1.8; }
-#analysisResult h1 { font-size:20px; margin-top:0; }
-#analysisResult h2 { font-size:16px; border-bottom:2px solid #e5e7eb; padding-bottom:6px; }
-#analysisResult table { margin:10px 0; }
-.toast { position:fixed; bottom:20px; right:20px; padding:12px 24px; border-radius:8px; color:#fff; font-size:14px; z-index:10000; animation:slideIn .3s ease; }
-@keyframes slideIn { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
-.toast-success { background:#16a34a; }
-.toast-error { background:#dc2626; }
-.toast-warning { background:#d97706; }
+/* 演示版标记 */
+body::after { content: "🔴 在线演示版"; position: fixed; top: 8px; right: 12px; z-index: 9999; background: #f97316; color: #fff; padding: 4px 12px; border-radius: 16px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; pointer-events: none; }
+.report-content { font-size: 14px; line-height: 1.8; }
+.report-content h1 { font-size: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; }
+.report-content h2 { font-size: 16px; margin-top: 20px; }
+.report-content table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+.report-content th, .report-content td { border: 1px solid #e5e7eb; padding: 6px 10px; text-align: left; }
+.report-content th { background: #f9fafb; font-weight: 600; }
+.report-content blockquote { border-left: 3px solid #4f46e5; margin: 8px 0; padding: 8px 16px; background: #f5f3ff; }
 </style>
 </head>
 <body>
 
-<span class="demo-badge">🔴 在线演示版</span>
+<!-- ========== 左侧导航栏 ========== -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <span class="sidebar-logo">🏆</span>
+    <div class="sidebar-title">
+      <span>任职资格认证</span>
+      <span class="sidebar-subtitle">AI 初筛系统 v2.0</span>
+    </div>
+  </div>
 
-<!-- Sidebar -->
-<nav style="width:240px;position:fixed;top:0;left:0;bottom:0;background:#1e293b;color:#fff;display:flex;flex-direction:column;z-index:100;">
-  <div style="padding:20px 16px;border-bottom:1px solid rgba(255,255,255,.1);">
-    <div style="font-size:24px;margin-bottom:4px;">🏆</div>
-    <div style="font-weight:700;font-size:15px;">任职资格认证</div>
-    <div style="font-size:11px;color:#94a3b8;">AI 初筛系统 v2.0</div>
+  <div class="sidebar-nav">
+    <a class="nav-link active" data-page="dashboard" href="#dashboard">
+      <span class="nav-icon">📊</span> 仪表盘
+    </a>
+    <a class="nav-link" data-page="assessment" href="#assessment">
+      <span class="nav-icon">📑</span> 新认证
+    </a>
+    <a class="nav-link" data-page="reports" href="#reports">
+      <span class="nav-icon">📋</span> 报告管理
+      <span class="nav-badge" id="navReportCount">5</span>
+    </a>
+    <a class="nav-link" data-page="standards" href="#standards">
+      <span class="nav-icon">📏</span> 标准管理
+    </a>
+    <a class="nav-link" data-page="employees" href="#employees">
+      <span class="nav-icon">👥</span> 员工管理
+    </a>
+    <a class="nav-link" data-page="batch" href="#batch">
+      <span class="nav-icon">📦</span> 批量处理
+    </a>
   </div>
-  <div style="flex:1;padding:8px 0;">
-    <a href="#" onclick="switchTab('dashboard',this)" class="nav-link active" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#cbd5e1;text-decoration:none;font-size:14px;transition:.15s;"><span>📊</span> 仪表盘</a>
-    <a href="#" onclick="switchTab('assessment',this)" class="nav-link" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#cbd5e1;text-decoration:none;font-size:14px;transition:.15s;"><span>📑</span> 新认证</a>
-    <a href="#" onclick="switchTab('reports',this)" class="nav-link" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#cbd5e1;text-decoration:none;font-size:14px;transition:.15s;"><span>📋</span> 报告管理</a>
-    <a href="#" onclick="switchTab('standards',this)" class="nav-link" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#cbd5e1;text-decoration:none;font-size:14px;transition:.15s;"><span>📏</span> 标准管理</a>
-    <a href="#" onclick="switchTab('batch',this)" class="nav-link" style="display:flex;align-items:center;gap:10px;padding:10px 16px;color:#cbd5e1;text-decoration:none;font-size:14px;transition:.15s;"><span>📦</span> 批量处理</a>
-  </div>
-  <div style="padding:16px;border-top:1px solid rgba(255,255,255,.1);font-size:11px;color:#64748b;">
-    <a href="https://github.com/Banna-skech/qualification-ai-screening" target="_blank" style="color:#94a3b8;text-decoration:none;">📂 View on GitHub →</a>
+
+  <div class="sidebar-footer">
+    <a class="nav-link" data-page="settings" href="#settings">
+      <span class="nav-icon">⚙️</span> 设置
+    </a>
+    <a href="https://github.com/Banna-skech/qualification-ai-screening" target="_blank" style="display:flex;align-items:center;gap:8px;padding:10px 16px;color:#94a3b8;text-decoration:none;font-size:13px;">
+      📂 源码
+    </a>
   </div>
 </nav>
 
-<!-- Main Content -->
-<div id="main" style="margin-left:240px;min-height:100vh;background:#f5f6f8;"></div>
+<!-- ========== 主内容区 ========== -->
+<main class="main-content" id="pageContent">
+  <!-- 动态加载页面内容 -->
+</main>
 
-<!-- Toast -->
-<div id="toast" class="toast" style="display:none;"></div>
+<!-- ========== Toast 容器 ========== -->
+<div class="toast-container" id="toastContainer"></div>
 
-<script>
-// ============================================================
-// Demo Data
-// ============================================================
-const DEMO_STANDARDS = [
-  {id:1,name:'GTM',sequence:'S',version:'V1.0',duty_count:6,level_coverage:['S1','S2-1','S2-2','S2-3','S3-1','S3-2','S3-3','S4-1','S4-2','S4-3','S5-1','S5-2','S5-3'],keywords:['GTM','产品上市','市场策略','产品推广'],department_scope:['手电事业部','探索事业部'],file_name:'1、GTM-任职资格标准-V1.0.xlsx'},
-  {id:2,name:'MKT',sequence:'S',version:'V1.0',duty_count:5,level_coverage:['S1','S2-1','S2-2','S2-3','S3-1','S3-2','S3-3','S4-1','S4-2','S4-3','S5-1','S5-2','S5-3'],keywords:['MKT','市场营销','品牌推广'],department_scope:[],file_name:'2、MKT-任职资格标准-V1.0.xlsx'},
-  {id:3,name:'产品经理（硬件）',sequence:'T',version:'V1.0',duty_count:8,level_coverage:['T1','T2-1','T2-2','T2-3','T3-1','T3-2','T3-3','T4-1','T4-2','T4-3','T5-1','T5-2','T5-3'],keywords:['产品经理','硬件','产品定义','产品规划'],department_scope:[],file_name:'1、产品经理（硬件）-任职资格标准-V1.0.xlsx'},
-  {id:4,name:'结构工程师',sequence:'T',version:'V2.0',duty_count:7,level_coverage:['T1','T2-1','T2-2','T2-3','T3-1','T3-2','T3-3','T4-1','T4-2','T4-3','T5-1','T5-2','T5-3'],keywords:['结构','设计','模具'],department_scope:[],file_name:'10、结构工程师-任职资格标准-V2.0.xlsx'},
-  {id:5,name:'软件工程师',sequence:'T',version:'V2.0',duty_count:6,level_coverage:['T1','T2-1','T2-2','T2-3','T3-1','T3-2','T3-3','T4-1','T4-2','T4-3','T5-1','T5-2','T5-3'],keywords:['软件','开发','编程'],department_scope:[],file_name:'8、软件工程师-任职资格标准-V2.0.xlsx'},
-  {id:6,name:'AI工程师',sequence:'T',version:'V1.0',duty_count:5,level_coverage:['T1','T2-1','T2-2','T2-3','T3-1','T3-2','T3-3','T4-1','T4-2','T4-3','T5-1','T5-2','T5-3'],keywords:['AI','机器学习','算法'],department_scope:[],file_name:'4、AI工程师-岗位任职资格标准-V1.0.xlsx'},
-  {id:7,name:'人事专员',sequence:'P',version:'V1.0',duty_count:5,level_coverage:['P1','P2-1','P2-2','P2-3','P3-1','P3-2','P3-3','P4-1','P4-2','P4-3','P5-1','P5-2','P5-3'],keywords:['人事','招聘','员工关系'],department_scope:[],file_name:'23、人事专员-任职资格标准-V1.0.xlsx'},
-  {id:8,name:'外贸销售专员',sequence:'S',version:'V1.0',duty_count:5,level_coverage:['S1','S2-1','S2-2','S2-3','S3-1','S3-2','S3-3','S4-1','S4-2','S4-3','S5-1','S5-2','S5-3'],keywords:['外贸','销售','客户开发'],department_scope:[],file_name:'15、外贸销售专员-任职资格标准-V1.0.xlsx'},
-  {id:9,name:'站外营销专员',sequence:'S',version:'V2.0',duty_count:5,level_coverage:['S1','S2-1','S2-2','S2-3','S3-1','S3-2','S3-3','S4-1','S4-2','S4-3','S5-1','S5-2','S5-3'],keywords:['站外','营销','推广'],department_scope:[],file_name:'6、站外营销专员-任职资格标准V2.0-全球独立战.xlsx'},
-];
-
-const DEMO_REPORTS = [
-  {id:1,employee_name:'王红波',applied_position:'GTM',applied_level:'S4-3',total_score:7.2,conclusion:'conditional',status:'final',created_at:'2026-07-15'},
-  {id:2,employee_name:'张明',applied_position:'结构工程师',applied_level:'T3-2',total_score:8.5,conclusion:'pass',status:'final',created_at:'2026-07-10'},
-  {id:3,employee_name:'李婷',applied_position:'MKT',applied_level:'S3-1',total_score:5.8,conclusion:'fail',status:'final',created_at:'2026-07-08'},
-];
-
-let currentTab = 'dashboard';
-
-// ============================================================
-// Tab Switching
-// ============================================================
-function switchTab(tab, el) {
-  currentTab = tab;
-  document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
-  if (el) el.classList.add('active');
-  if (tab === 'dashboard') renderDashboard();
-  else if (tab === 'assessment') renderAssessment();
-  else if (tab === 'reports') renderReports();
-  else if (tab === 'standards') renderStandards();
-  else if (tab === 'batch') renderBatch();
-}
-
-// ============================================================
-// Toast
-// ============================================================
-function showToast(msg, type) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'toast toast-' + (type||'success'); t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 3000);
-}
-
-// ============================================================
-// Dashboard
-// ============================================================
-function renderDashboard() {
-  document.getElementById('main').innerHTML = `
-    <div class="page-header"><h2>📊 仪表盘</h2><p>任职资格认证数据总览（演示数据）</p></div>
-    <div class="flex-cards">
-      <div class="card"><div class="stat-num" style="color:#2563eb">${DEMO_STANDARDS.length}</div><div class="stat-label">岗位标准覆盖</div></div>
-      <div class="card"><div class="stat-num" style="color:#16a34a">76</div><div class="stat-label">实际系统标准总数（P/S/T三序列）</div></div>
-      <div class="card"><div class="stat-num" style="color:#d97706">3</div><div class="stat-label">演示认证报告</div></div>
-      <div class="card"><div class="stat-num" style="color:#7c3aed">3</div><div class="stat-label">序列类型（P职能/S营销/T技术）</div></div>
+<!-- ========== 全局 Modal ========== -->
+<div class="modal-overlay" id="globalModal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modalTitle"></h3>
+      <button class="modal-close" onclick="Modal.hide()">✕</button>
     </div>
-    <div class="demo-section">
-      <h3>📋 最近报告</h3>
-      <table>${DEMO_REPORTS.map(r => `<tr><td>${r.employee_name}</td><td>${r.applied_position} / ${r.applied_level}</td><td>${r.total_score}</td><td><span class="badge ${r.conclusion==='pass'?'badge-success':r.conclusion==='conditional'?'badge-warning':'badge-primary'}">${r.conclusion==='pass'?'✅ 通过':r.conclusion==='conditional'?'⚠️ 有条件通过':'❌ 不通过'}</span></td><td>${r.created_at}</td></tr>`).join('')}</table>
-    </div>
-    <div class="demo-section">
-      <h3>⚙️ 技术架构</h3>
-      <div class="card" style="margin:0;display:flex;gap:24px;flex-wrap:wrap;">
-        <div><strong>后端</strong><br><span style="font-size:13px;color:#6b7280;">Python Flask + SQLAlchemy + SQLite</span></div>
-        <div><strong>前端</strong><br><span style="font-size:13px;color:#6b7280;">原生 JavaScript（无框架依赖）</span></div>
-        <div><strong>AI 引擎</strong><br><span style="font-size:13px;color:#6b7280;">DeepSeek V4 Pro（兼容 Anthropic SDK）</span></div>
-        <div><strong>部署</strong><br><span style="font-size:13px;color:#6b7280;">GitHub Pages（演示版）+ 本地/Render 生产部署</span></div>
-      </div>
-    </div>
-    <div class="demo-section" style="margin-bottom:40px;">
-      <h3>🔗 完整系统</h3>
-      <p style="font-size:14px;color:#6b7280;">本页面为功能演示版。完整系统包含 AI 自动对标分析、逐条评分、认证报告生成等功能，请查看源码或本地部署。</p>
-      <a href="https://github.com/Banna-skech/qualification-ai-screening" target="_blank" style="display:inline-block;margin-top:8px;padding:10px 20px;background:#2563eb;color:#fff;text-decoration:none;border-radius:8px;font-size:14px;">📂 查看完整源码 →</a>
-    </div>`;
-}
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer" id="modalFooter"></div>
+  </div>
+</div>
 
-// ============================================================
-// Assessment (Demo — client-side PPT/standard parsing + simulated analysis)
-// ============================================================
-function renderAssessment() {
-  document.getElementById('main').innerHTML = `
-    <div class="page-header"><h2>📑 新认证</h2><p>上传员工举证PPT + 选择岗位标准，启动 AI 对标分析</p></div>
-    <div class="card">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-        <div>
-          <label style="font-weight:600;font-size:13px;">选择岗位标准</label>
-          <select id="stdSelect" style="width:100%;padding:8px;border:1px solid #d1d5db;border-radius:6px;margin-top:4px;">
-            <option value="">— 请选择岗位标准 —</option>
-            ${DEMO_STANDARDS.map(s => `<option value="${s.id}">${s.name} (${s.sequence}序列 · ${s.version})</option>`).join('')}
-          </select>
-        </div>
-        <div>
-          <label style="font-weight:600;font-size:13px;">员工姓名</label>
-          <input id="empName" type="text" placeholder="输入员工姓名" style="width:100%;padding:8px;border:1px solid #d1d5db;border-radius:6px;margin-top:4px;">
-        </div>
-      </div>
-      <div style="margin-top:16px;">
-        <div class="upload-zone" id="pptUploadZone" onclick="document.getElementById('pptFileInput').click()">
-          <input type="file" id="pptFileInput" accept=".pptx" style="display:none" onchange="handlePPTFile(event)">
-          <div class="upload-icon">📑</div>
-          <div class="upload-text"><strong>点击上传员工举证PPT</strong><span>支持 .pptx 格式</span></div>
-        </div>
-        <div id="pptFileInfo" style="margin-top:8px;font-size:13px;color:#6b7280;"></div>
-      </div>
-      <button id="btnAnalyze" class="btn" style="margin-top:16px;padding:10px 24px;background:#2563eb;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;" onclick="runDemoAnalysis()" disabled>🔍 开始对标分析（演示版）</button>
-      <div id="analysisResult"></div>
-    </div>`;
-
-  document.getElementById('stdSelect').addEventListener('change', checkAssessmentReady);
-  document.getElementById('empName').addEventListener('input', checkAssessmentReady);
-}
-
-let selectedPPTFile = null;
-function handlePPTFile(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  selectedPPTFile = file;
-  document.getElementById('pptFileInfo').innerHTML = `📄 ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
-  checkAssessmentReady();
-}
-
-function checkAssessmentReady() {
-  const std = document.getElementById('stdSelect')?.value;
-  const name = document.getElementById('empName')?.value;
-  document.getElementById('btnAnalyze').disabled = !(std && name && selectedPPTFile);
-}
-
-// ============================================================
-// Simulated AI Analysis (Demo)
-// ============================================================
-async function runDemoAnalysis() {
-  const btn = document.getElementById('btnAnalyze');
-  const stdId = document.getElementById('stdSelect').value;
-  const empName = document.getElementById('empName').value;
-  const std = DEMO_STANDARDS.find(s => s.id == stdId);
-
-  btn.disabled = true; btn.textContent = '⏳ 正在解析PPT...';
-  const resultEl = document.getElementById('analysisResult');
-  resultEl.innerHTML = '<p style="color:#6b7280;">⏳ 解析中...</p>';
-
-  // Simulate processing delay
-  await new Promise(r => setTimeout(r, 1200));
-  btn.textContent = '⏳ 正在对标分析...';
-  await new Promise(r => setTimeout(r, 1500));
-
-  // Build demo analysis report
-  const today = new Date().toLocaleDateString('zh-CN', {year:'numeric', month:'long', day:'numeric'});
-
-  resultEl.innerHTML = `<div style="font-family:monospace;font-size:12px;line-height:1.8;white-space:pre-wrap;">
-# 🏆 任职资格认证初审报告
-
----
-
-## 📌 基本信息
-
-| 项目 | 内容 |
-|------|------|
-| 员工姓名 | ${empName} |
-| 所在部门 | 研发事业部-产品部 |
-| 当前岗位 | ${std.name} |
-| 申报岗位 | ${std.name} |
-| 申报级别 | ${std.sequence}3-2（中级·第2档） |
-| 对应序列 | ${std.sequence}序列 |
-| 认证日期 | ${today} |
-| 使用标准 | 《${std.name}-任职资格标准-${std.version}》 |
-
----
-
-## 📊 认证总览
-
-| 职责 | 得分 | 评级 |
-|------|------|------|
-| 职责一：产品规划与定义 | 2/2 | ✅ 完全达成 |
-| 职责二：市场分析与调研 | 2/2 | ✅ 完全达成 |
-| 职责三：项目推进与落地 | 1/2 | ⚠️ 基本达成 |
-| 职责四：跨部门协作 | 2/2 | ✅ 完全达成 |
-| 职责五：团队带教与赋能 | 1/2 | ⚠️ 基本达成 |
-| **综合总分** | **8 / 10** | — |
-
-### 🎯 认证结论
-
-> **[⚠️ 有条件通过（10-13分）]**
-
-**结论说明**：员工在产品规划和市场分析方面表现优秀，举证充分且有数据支撑。但在项目推进和团队赋能方面证据偏弱，建议补充具体的项目管理数据和带教案例后重新提交。
-
----
-
-## 📋 逐条检查详情
-
-### 职责一：产品规划与定义
-
-| # | 类型 | 标准要求摘要 | 举证内容摘要 | 覆盖 | 问题说明 |
-|----|------|-------------|-------------|------|----------|
-| 1.1 | 关键成果 | 独立完成产品路线图规划 | PPT第5页：2025年产品路线图含6款新品规划 | ✅ | 路线图完整，时间节点明确 |
-| 1.2 | 关键行为 | 输出PRD文档 | PPT第8页：Olight Baton PRD v2.3 | ✅ | 文档结构规范，评审记录完整 |
-
-**本职责得分：2/2**
-
-### 职责三：项目推进与落地
-
-| # | 类型 | 标准要求摘要 | 举证内容摘要 | 覆盖 | 问题说明 |
-|----|------|-------------|-------------|------|----------|
-| 3.1 | 关键成果 | 主导2+项目按时交付 | PPT第15页：提及参与项目，未列出具体交付节点 | ⚠️ | 缺少项目交付时间线和结果数据 |
-| 3.2 | 关键行为 | 输出项目周报 | 无对应举证 | ❌ | 建议补充项目周报或里程碑文档 |
-
-**本职责得分：1/2**
-
----
-
-## 💡 改进建议
-
-### 🚨 紧急
-1. **【职责三】** 补充项目管理数据：项目名称、起止时间、交付物
-2. **【职责五】** 提供带教具体案例：带教对象、时长、成果
-
-### 📌 重要
-1. **【职责三】** 建议补充项目周报或会议纪要作为佐证
-
----
-
-> 🤖 本报告由任职资格认证AI初筛系统自动生成 | 演示版 | ${new Date().toISOString().split('T')[0]}
-</div>`;
-
-  btn.textContent = '✅ 分析完成';
-  showToast('演示分析完成！完整系统支持逐条详细评分', 'success');
-}
-
-// ============================================================
-// Standards List
-// ============================================================
-function renderStandards() {
-  document.getElementById('main').innerHTML = `
-    <div class="page-header"><h2>📏 标准管理</h2><p>共 ${DEMO_STANDARDS.length} 个演示标准（完整系统含76个岗位标准）</p></div>
-    <div class="demo-section">
-      ${DEMO_STANDARDS.map(s => `
-        <div class="card" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
-          <div>
-            <strong>${s.name}</strong>
-            <span class="badge badge-primary" style="margin-left:8px;">${s.sequence}序列</span>
-            <span class="badge" style="margin-left:4px;background:#f3f4f6;color:#6b7280;">${s.version}</span>
-            <div style="font-size:12px;color:#9ca3af;margin-top:4px;">📋 ${s.duty_count}项职责 · 📊 ${s.level_coverage.length}级覆盖 · 关键词: ${(s.keywords||[]).join(', ')}</div>
-          </div>
-          <span style="font-size:12px;color:#9ca3af;">📄 ${s.file_name}</span>
-        </div>
-      `).join('')}
-    </div>`;
-}
-
-// ============================================================
-// Reports List
-// ============================================================
-function renderReports() {
-  document.getElementById('main').innerHTML = `
-    <div class="page-header"><h2>📋 报告管理</h2><p>演示认证报告列表</p></div>
-    <div class="demo-section">
-      <table>
-        <thead><tr><th>员工</th><th>岗位</th><th>级别</th><th>总分</th><th>结论</th><th>日期</th></tr></thead>
-        <tbody>${DEMO_REPORTS.map(r => `<tr>
-          <td><strong>${r.employee_name}</strong></td>
-          <td>${r.applied_position}</td>
-          <td>${r.applied_level}</td>
-          <td><strong>${r.total_score}</strong></td>
-          <td><span class="badge ${r.conclusion==='pass'?'badge-success':r.conclusion==='conditional'?'badge-warning':'badge-primary'}">${r.conclusion==='pass'?'✅ 通过':r.conclusion==='conditional'?'⚠️ 有条件通过':'❌ 不通过'}</span></td>
-          <td>${r.created_at}</td>
-        </tr>`).join('')}</tbody>
-      </table>
-    </div>`;
-}
-
-// ============================================================
-// Batch
-// ============================================================
-function renderBatch() {
-  document.getElementById('main').innerHTML = `
-    <div class="page-header"><h2>📦 批量处理</h2><p>上传多个员工举证PPT，批量生成认证报告</p></div>
-    <div class="card">
-      <div class="upload-zone" onclick="showToast('演示模式：请部署完整系统以使用批量处理功能','warning')">
-        <div class="upload-icon">📦</div>
-        <div class="upload-text"><strong>拖拽多个PPT文件到此处</strong><span>或点击批量选择（完整系统支持）</span></div>
-      </div>
-    </div>
-    <div class="demo-section">
-      <h3>📊 批量汇总示例</h3>
-      <table>
-        <thead><tr><th>#</th><th>员工</th><th>部门</th><th>岗位</th><th>级别</th><th>总分</th><th>结论</th></tr></thead>
-        <tbody>
-          <tr><td>1</td><td>王红波</td><td>手电事业部</td><td>GTM</td><td>S4-3</td><td>7.2</td><td>⚠️有条件通过</td></tr>
-          <tr><td>2</td><td>张明</td><td>研发事业部</td><td>结构工程师</td><td>T3-2</td><td>8.5</td><td>✅通过</td></tr>
-          <tr><td>3</td><td>李婷</td><td>电商事业部</td><td>MKT</td><td>S3-1</td><td>5.8</td><td>❌不通过</td></tr>
-        </tbody>
-      </table>
-      <div style="margin-top:12px;padding:12px;background:#fffbeb;border-radius:8px;font-size:13px;">
-        <strong>📌 完整系统支持：</strong>自动扫描举证材料目录 → 逐个分析 → 生成独立报告 + 汇总表
-      </div>
-    </div>`;
-}
-
-// ============================================================
-// Init
-// ============================================================
-renderDashboard();
-
-// Make active nav link highlight work
-document.querySelectorAll('.nav-link').forEach(a => {
-  a.addEventListener('click', function() {
-    document.querySelectorAll('.nav-link').forEach(x => x.style.background = '');
-    this.style.background = 'rgba(255,255,255,.1)';
-  });
-});
-// Set first link active
-document.querySelector('.nav-link').style.background = 'rgba(255,255,255,.1)';
-</script>
+<script src="static/js/utils.js"></script>
+<script src="static/js/api.js"></script>
+<script src="static/js/components/toast.js"></script>
+<script src="static/js/components/modal.js"></script>
+<script src="static/js/components/table.js"></script>
+<script src="static/js/components/chart.js"></script>
+<script src="static/js/components/markdown.js"></script>
+<script src="static/js/components/spinner.js"></script>
+<script src="static/js/components/searchselect.js"></script>
+<script src="static/js/pages/dashboard.js"></script>
+<script src="static/js/pages/assessment.js"></script>
+<script src="static/js/pages/reports.js"></script>
+<script src="static/js/pages/standards.js"></script>
+<script src="static/js/pages/employees.js"></script>
+<script src="static/js/pages/batch.js"></script>
+<script src="static/js/pages/settings.js"></script>
+<script src="static/js/app.js"></script>
 </body>
 </html>
