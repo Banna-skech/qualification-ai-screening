@@ -3,61 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>任职资格标准评审与认证初筛系统 v2.0</title>
+<title>任职资格智能评审工作台 · Demo</title>
 <link rel="stylesheet" href="static/css/style.css">
-<style>
-/* 演示版标记 */
-body::after { content: "🔴 在线演示版"; position: fixed; top: 8px; right: 12px; z-index: 9999; background: #f97316; color: #fff; padding: 4px 12px; border-radius: 16px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; pointer-events: none; }
-.report-content { font-size: 14px; line-height: 1.8; }
-.report-content h1 { font-size: 20px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; }
-.report-content h2 { font-size: 16px; margin-top: 20px; }
-.report-content table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
-.report-content th, .report-content td { border: 1px solid #e5e7eb; padding: 6px 10px; text-align: left; }
-.report-content th { background: #f9fafb; font-weight: 600; }
-.report-content blockquote { border-left: 3px solid #4f46e5; margin: 8px 0; padding: 8px 16px; background: #f5f3ff; }
-</style>
 </head>
 <body>
 
 <!-- ========== 左侧导航栏 ========== -->
 <nav class="sidebar" id="sidebar">
   <div class="sidebar-brand">
-    <span class="sidebar-logo">🏆</span>
+    <span class="sidebar-logo">◈</span>
     <div class="sidebar-title">
-      <span>任职资格标准评审与认证初筛系统</span>
-      <span class="sidebar-subtitle">v2.0</span>
+      <span>任职资格智能评审</span>
+      <span class="sidebar-subtitle">AI 认证工作台 · Demo</span>
     </div>
   </div>
 
   <div class="sidebar-nav">
     <a class="nav-link active" data-page="dashboard" href="#dashboard">
-      <span class="nav-icon">📊</span> 仪表盘
+      <span class="nav-icon">⌂</span> 仪表盘
     </a>
     <a class="nav-link" data-page="assessment" href="#assessment">
-      <span class="nav-icon">📑</span> 新认证
+      <span class="nav-icon">＋</span> 新认证
     </a>
     <a class="nav-link" data-page="reports" href="#reports">
-      <span class="nav-icon">📋</span> 报告管理
-      <span class="nav-badge" id="navReportCount">5</span>
+      <span class="nav-icon">▤</span> 报告管理
+      <span class="nav-badge" id="navReportCount">0</span>
     </a>
     <a class="nav-link" data-page="standards" href="#standards">
-      <span class="nav-icon">📏</span> 标准管理
+      <span class="nav-icon">◫</span> 标准管理
     </a>
     <a class="nav-link" data-page="employees" href="#employees">
-      <span class="nav-icon">👥</span> 员工管理
+      <span class="nav-icon">◎</span> 员工管理
     </a>
     <a class="nav-link" data-page="batch" href="#batch">
-      <span class="nav-icon">📦</span> 批量处理
+      <span class="nav-icon">▦</span> 批量认证
     </a>
   </div>
 
   <div class="sidebar-footer">
     <a class="nav-link" data-page="settings" href="#settings">
-      <span class="nav-icon">⚙️</span> 设置
+      <span class="nav-icon">⚙</span> 设置
     </a>
-    <a href="https://github.com/Banna-skech/qualification-ai-screening" target="_blank" style="display:flex;align-items:center;gap:8px;padding:10px 16px;color:#94a3b8;text-decoration:none;font-size:13px;">
-      📂 源码
-    </a>
+    <div class="demo-ribbon"><span class="status-dot done"></span>演示模式 · 数据已脱敏</div>
   </div>
 </nav>
 
@@ -82,6 +69,8 @@ body::after { content: "🔴 在线演示版"; position: fixed; top: 8px; right:
 </div>
 
 <script src="static/js/utils.js"></script>
+<script>window.DEMO_MODE = true;</script>
+<script src="static/js/demo-fixtures.js"></script>
 <script src="static/js/api.js"></script>
 <script src="static/js/components/toast.js"></script>
 <script src="static/js/components/modal.js"></script>

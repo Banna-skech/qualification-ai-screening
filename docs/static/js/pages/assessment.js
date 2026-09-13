@@ -42,8 +42,9 @@ const AssessmentPage = {
             <input type="file" id="fileInput" accept=".pptx" hidden>
             <div class="upload-icon">📑</div>
             <div class="upload-text"><strong>拖拽 PPT 文件到此处</strong><span>或点击选择文件（.pptx）</span></div>
-            <div class="upload-hint">支持多个文件</div>
+            <div class="upload-hint">支持多个文件 · 不会上传真实员工数据</div>
           </div>
+          <button class="btn btn-ghost demo-example-btn" id="loadDemoAssessment">▶ 加载示例认证</button>
           <div class="file-list" id="fileList"></div>
           <div id="empPreview" style="display:none;margin-top:12px;padding:12px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-sm)">
             <div style="font-size:13px"><span style="color:var(--gray-500)">👤 员工：</span><strong id="empName">-</strong></div>
@@ -68,51 +69,11 @@ const AssessmentPage = {
             <div style="font-size:13px"><span style="color:var(--gray-500)">📝 申报级别：</span>
               <select class="select-level" id="targetLevel" style="width:auto;margin-top:4px">
                 <option value="">自动检测</option>
-                <optgroup label="T序列-技术">
-                  <option value="T1">T1 助理</option>
-                  <option value="T2-1">T2-1 初级</option>
-                  <option value="T2-2">T2-2 初级</option>
-                  <option value="T2-3">T2-3 初级</option>
-                  <option value="T3-1">T3-1 中级</option>
-                  <option value="T3-2">T3-2 中级</option>
-                  <option value="T3-3">T3-3 中级</option>
-                  <option value="T4-1">T4-1 高级</option>
-                  <option value="T4-2">T4-2 高级</option>
-                  <option value="T4-3">T4-3 高级</option>
-                  <option value="T5-1">T5-1 专家</option>
-                  <option value="T5-2">T5-2 专家</option>
-                  <option value="T5-3">T5-3 专家</option>
-                </optgroup>
-                <optgroup label="S序列-营销">
-                  <option value="S1">S1 助理</option>
-                  <option value="S2-1">S2-1 初级</option>
-                  <option value="S2-2">S2-2 初级</option>
-                  <option value="S2-3">S2-3 初级</option>
-                  <option value="S3-1">S3-1 中级</option>
-                  <option value="S3-2">S3-2 中级</option>
-                  <option value="S3-3">S3-3 中级</option>
-                  <option value="S4-1">S4-1 高级</option>
-                  <option value="S4-2">S4-2 高级</option>
-                  <option value="S4-3">S4-3 高级</option>
-                  <option value="S5-1">S5-1 专家</option>
-                  <option value="S5-2">S5-2 专家</option>
-                  <option value="S5-3">S5-3 专家</option>
-                </optgroup>
-                <optgroup label="P序列-职能">
-                  <option value="P1">P1 助理</option>
-                  <option value="P2-1">P2-1 初级</option>
-                  <option value="P2-2">P2-2 初级</option>
-                  <option value="P2-3">P2-3 初级</option>
-                  <option value="P3-1">P3-1 中级</option>
-                  <option value="P3-2">P3-2 中级</option>
-                  <option value="P3-3">P3-3 中级</option>
-                  <option value="P4-1">P4-1 高级</option>
-                  <option value="P4-2">P4-2 高级</option>
-                  <option value="P4-3">P4-3 高级</option>
-                  <option value="P5-1">P5-1 专家</option>
-                  <option value="P5-2">P5-2 专家</option>
-                  <option value="P5-3">P5-3 专家</option>
-                </optgroup>
+                <option value="T3-2">T3-2 · 结构化示例</option>
+                <option value="T4-2">T4-2 · 结构化示例</option>
+                <option value="S3-1">S3-1 · 结构化示例</option>
+                <option value="S4-3">S4-3 · 结构化示例</option>
+                <option value="P3-3">P3-3 · 结构化示例</option>
               </select>
             </div>
           </div>
@@ -143,6 +104,8 @@ const AssessmentPage = {
       this.handleFiles(e.dataTransfer.files);
     });
     input.addEventListener('change', () => this.handleFiles(input.files));
+    const demoBtn = document.getElementById('loadDemoAssessment');
+    if (demoBtn) demoBtn.addEventListener('click', () => this.handleFiles([{ name: '陈某某-测试工程师（演示）.pptx' }]));
   },
 
   toggleMode() {
@@ -304,9 +267,7 @@ const AssessmentPage = {
         document.getElementById('reportArea').innerHTML +=
           '<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">' +
           '<button class="btn btn-primary" onclick="AssessmentPage.saveAndGoToReport()">💾 保存并查看</button>' +
-          '<button class="btn" onclick="AssessmentPage.copyResult()">📋 复制报告</button>' +
-          '<button class="btn" onclick="AssessmentPage.downloadLastReport(\'docx\')">📄 Word</button>' +
-          '<button class="btn" onclick="AssessmentPage.downloadLastReport(\'txt\')">📃 TXT</button></div>';
+          '<button class="btn" onclick="AssessmentPage.copyResult()">📋 复制摘要</button></div>';
         // Refresh report count
         App.refreshReportCount();
       },
@@ -327,21 +288,6 @@ const AssessmentPage = {
     navigator.clipboard.writeText(md).then(() => showToast('📋 已复制', 'success'));
   },
 
-  async downloadLastReport(format) {
-    // Get latest report for current employee
-    const name = this.state.files[0]?.empInfo?.['员工姓名'] || '';
-    if (!name) { showToast('请先生成报告', 'warning'); return; }
-    try {
-      const data = await API.get('/api/reports', { search: name, per_page: 1 });
-      if (data.items && data.items.length > 0) {
-        window.open(`/api/export/report/${data.items[0].id}/${format}`, '_blank');
-      } else {
-        showToast('未找到报告记录', 'warning');
-      }
-    } catch (e) {
-      showToast('下载失败', 'error');
-    }
-  },
 
   destroy() { this.container = null; },
 };

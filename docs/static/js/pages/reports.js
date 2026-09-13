@@ -31,7 +31,6 @@ const ReportsPage = {
         <div class="page-actions">
           <button class="btn btn-primary" onclick="App.navigate('assessment')">📑 新建认证</button>
           <button class="btn btn-danger" id="btnBatchDelete" disabled onclick="ReportsPage.confirmBatchDelete()">🗑️ 批量删除</button>
-          <button class="btn" id="btnExport" onclick="ReportsPage.exportXlsx()">📥 导出Excel</button>
         </div>
       </div>
       <div id="reportTabs" style="display:flex;gap:0;margin-bottom:14px;border-bottom:2px solid var(--gray-200)">
@@ -130,12 +129,7 @@ const ReportsPage = {
         selectable: true,
         selectedIds: this.state.selected,
         rowActions: r => `
-          <button class="btn btn-sm" onclick="ReportsPage.showReport(${r.id})">查看</button>
-          <select class="btn btn-sm" style="padding:4px 8px;cursor:pointer" onchange="if(this.value) ReportsPage.download(${r.id}, this.value); this.value='';">
-            <option value="">下载▼</option>
-            <option value="docx">📄 Word</option>
-            <option value="txt">📃 TXT</option>
-          </select>
+          <button class="btn btn-sm" onclick="ReportsPage.showReport(${r.id})">站内查看</button>
           <button class="btn btn-sm btn-ghost" onclick="ReportsPage.confirmDelete(${r.id})">删除</button>`,
         pagination: { page: data.page, pages: data.pages, total: data.total },
       });
@@ -176,9 +170,7 @@ const ReportsPage = {
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
           <h3>${title}</h3>
           <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <button class="btn btn-sm btn-primary" onclick="ReportsPage.download(${id},'docx')">📄 Word</button>
-            <button class="btn btn-sm" onclick="ReportsPage.download(${id},'txt')">📃 TXT</button>
-            <button class="btn btn-sm" onclick="ReportsPage.exportHtml(${id})">🖨️ 打印</button>
+            <span class="badge badge-primary">站内预览 · 不提供下载</span>
             <button class="btn btn-sm btn-ghost" onclick="document.getElementById('reportDetail').style.display='none'">关闭</button>
           </div>
         </div>
@@ -190,14 +182,6 @@ const ReportsPage = {
     }
   },
 
-  exportMd(id) { ReportsPage.download(id, 'md'); },
-  exportHtml(id) { window.open(`/api/export/report/${id}/html`, '_blank'); },
-  download(id, format) { window.open(`/api/export/report/${id}/${format}`, '_blank'); },
-  exportXlsx() {
-    const ids = Array.from(this.state.selected);
-    const url = ids.length ? `/api/export/reports/xlsx?ids=${ids.join(',')}` : '/api/export/reports/xlsx';
-    window.open(url, '_blank');
-  },
 
   confirmDelete(id) {
     Modal.showConfirm('删除报告', '确认要删除这份报告吗？此操作不可撤销。', async () => {

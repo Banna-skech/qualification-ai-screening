@@ -13,7 +13,7 @@ const StandardsPage = {
   render() {
     this.container.innerHTML = `
       <div class="page-header">
-        <h2>📏 标准管理</h2><p>查看所有岗位任职资格标准，点击按钮下载原文件</p>
+        <h2>◫ 标准管理</h2><p>浏览演示版岗位标准摘要与审核状态</p>
       </div>
       <div class="filter-bar">
         <select id="filterSeq"><option value="">全部序列</option>
@@ -24,7 +24,8 @@ const StandardsPage = {
         <button class="btn" id="btnExtractSummary" title="扫描岗位标准文件夹和注册表，同步新增/变更的标准到系统，并重新提取职责/部门/版本等摘要信息">🔄 同步刷新标准</button>
         <button class="btn btn-primary" id="btnAuditStd" title="上传新岗位标准文件，按审核要求进行入库前AI审核">🆕 新标准审核</button>
       </div>
-      <div id="stdListContainer">${Spinner.render()}</div>`;
+      <div id="stdListContainer">${Spinner.render()}</div>
+      <div id="stdDetail" class="detail-pane" style="display:none"></div>`;
     document.getElementById('btnStdSearch').addEventListener('click', () => this.loadData());
     document.getElementById('btnAuditStd').addEventListener('click', () => this.showAudit());
     document.getElementById('btnExtractSummary').addEventListener('click', async () => {
@@ -77,13 +78,11 @@ const StandardsPage = {
                 <span class="badge badge-primary" style="margin-left:8px">${s.sequence}序列</span>
                 ${s.version ? `<span class="badge" style="margin-left:4px;background:var(--gray-100);color:var(--gray-600)">${s.version}</span>` : ''}
               </div>
-              <div style="display:flex;gap:6px">
-                ${hasFile ? `<span style="font-size:12px;color:var(--gray-400)">📄 ${Utils.escapeHtml(s.file_name)}</span>` : ''}
-              </div>
+              <div style="display:flex;gap:6px"><button class="btn btn-sm btn-primary" onclick="StandardsPage.showDetail(${s.id})">站内预览</button></div>
             </div>
             <div style="font-size:13px;color:var(--gray-500);margin-top:6px;display:flex;gap:14px;flex-wrap:wrap">
               <span>📋 关键职责 <strong style="color:var(--gray-700)">${s.duty_count || '?'}</strong> 项</span>
-              <span>📊 覆盖级别 <strong style="color:var(--gray-700)">${levels.length}</strong> 级${levels.length ? `（${levels[0]} ~ ${levels[levels.length - 1]}）` : ''}</span>
+              <span>📊 示例级别 <strong style="color:var(--gray-700)">${levels.join('、') || '—'}</strong></span>
               ${(s.department_scope || []).length ? `<span>🏢 ${(s.department_scope || []).slice(0, 3).map(Utils.escapeHtml).join('、')}</span>` : ''}
             </div>
             ${duties.length > 0 ? `
@@ -147,12 +146,13 @@ const StandardsPage = {
         html += `<div class="card" style="margin-bottom:12px;background:var(--warning-bg)">
           <div class="card-title">⚠️ 暂无结构化职责数据</div>
           <p style="font-size:13px;color:var(--gray-600)">
-            该标准尚未解析文件内容。您可以下载原文件查看详细内容。
+            该标准尚未解析文件内容，当前仅提供摘要预览。
           </p>
         </div>`;
       }
 
       html += `<div style="margin-top:12px;display:flex;gap:8px">
+        <span class="badge badge-primary">站内预览 · 不提供下载</span>
         <button class="btn" onclick="StandardsPage.loadData();document.getElementById('stdDetail').style.display='none'">返回列表</button>
       </div>`;
 
@@ -171,7 +171,7 @@ const StandardsPage = {
         <select id="genSeq" class="select-std"><option value="S">S序列(营销)</option><option value="P">P序列(职能)</option><option value="T">T序列(技术)</option></select>
         <input type="text" id="genDept" class="select-std" placeholder="覆盖部门（如：电商事业部）">
         <textarea id="genDesc" class="select-std" rows="4" placeholder="岗位描述、主要职责、特殊要求等..."></textarea>
-        <div style="font-size:12px;color:var(--gray-500)">支持级别: 助理(T1/P1/S1)、初级(2-1/2-2/2-3)、中级(3-1/3-2/3-3)、高级(4-1/4-2/4-3)、专家(5-1/5-2/5-3)</div>
+        <div style="font-size:12px;color:var(--gray-500)">演示仅使用当前示例级别，正式业务级别体系不在公开站点展示。</div>
       </div>
       <div id="genResult" style="max-height:400px;overflow-y:auto;margin-top:16px"></div>`,
       `<button class="btn" onclick="Modal.hide()">关闭</button>
@@ -467,4 +467,5 @@ const StandardsPage = {
   },
 
   destroy() { this.container = null; },
+
 };

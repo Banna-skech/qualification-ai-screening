@@ -12,7 +12,9 @@ const DashboardPage = {
 
   render() {
     this.container.innerHTML = `
-      <div class="page-header"><h2>📊 仪表盘</h2><p>认证系统全局概览</p></div>
+      <div class="page-header"><h2>任职资格智能评审工作台</h2><p>统一标准、证据与审核结论，快速定位需要专家复核的事项。</p>
+        <div class="page-actions"><button class="btn btn-primary" onclick="App.navigate('assessment')">＋ 新建认证</button><button class="btn" onclick="App.navigate('batch')">批量认证</button><button class="btn" onclick="App.navigate('standards')">查看标准</button></div>
+      </div>
       <div class="stats-grid" id="dashStats"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
         <div class="card"><div class="card-title">📈 通过率趋势</div><div class="chart-container"><canvas id="trendChart"></canvas></div></div>

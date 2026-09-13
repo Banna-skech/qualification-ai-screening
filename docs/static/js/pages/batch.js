@@ -34,8 +34,9 @@ const BatchPage = {
             <input type="file" id="batchFileInput" accept=".pptx" multiple hidden>
             <div class="upload-icon">📑📑📑</div>
             <div class="upload-text"><strong>拖拽多个 PPT 文件到此处</strong><span>或点击选择（支持多选 .pptx）</span></div>
-            <div class="upload-hint">系统会自动解析员工信息并匹配岗位标准</div>
+            <div class="upload-hint">系统会自动解析员工信息并匹配岗位标准 · 不会上传真实文件</div>
           </div>
+          <button class="btn btn-ghost demo-example-btn" id="loadDemoBatch">▶ 加载 5 条示例任务</button>
           <div class="file-list" id="batchFileList"></div>
         </div>
 
@@ -70,13 +71,17 @@ const BatchPage = {
       this.handleFiles(e.dataTransfer.files);
     });
     input.addEventListener('change', () => this.handleFiles(input.files));
+    const demoBtn = document.getElementById('loadDemoBatch');
+    if (demoBtn) demoBtn.addEventListener('click', () => this.handleFiles([
+      {name:'陈某某-测试工程师（演示）.pptx'}, {name:'赵某某-产品经理（硬件）（演示）.pptx'},
+      {name:'李某某-MKT（演示）.pptx'}, {name:'张某某-结构工程师（演示）.pptx'}, {name:'王某某-GTM（演示）.pptx'}
+    ]));
   },
 
   async loadRegistry() {
     try {
-      const res = await fetch('/api/v2/standards/registry');
-      if (res.ok) {
-        const registry = await res.json();
+      const registry = await API.get('/api/v2/standards/registry');
+      if (registry) {
         // 序列排序：T → S → P
         const seqOrder = { 'T序列': 0, 'S序列': 1, 'P序列': 2 };
         this.state.registry = (registry['岗位标准清单'] || []).slice().sort((a, b) =>
@@ -160,21 +165,8 @@ const BatchPage = {
   },
 
   levelOptions(selected) {
-    const groups = { T: 'T序列-技术', S: 'S序列-营销', P: 'P序列-职能' };
-    const names = { 1: '助理', 2: '初级', 3: '中级', 4: '高级', 5: '专家' };
-    let html = `<option value="">自动检测</option>`;
-    for (const seq of ['T', 'S', 'P']) {
-      html += `<optgroup label="${groups[seq]}">`;
-      html += `<option value="${seq}1" ${selected === seq + '1' ? 'selected' : ''}>${seq}1 助理</option>`;
-      for (let lv = 2; lv <= 5; lv++) {
-        for (let g = 1; g <= 3; g++) {
-          const v = `${seq}${lv}-${g}`;
-          html += `<option value="${v}" ${selected === v ? 'selected' : ''}>${v} ${names[lv]}</option>`;
-        }
-      }
-      html += `</optgroup>`;
-    }
-    return html;
+    const levels = ['', 'T3-2', 'T4-2', 'S3-1', 'S4-3', 'P3-3'];
+    return levels.map(v => `<option value="${v}" ${selected === v ? 'selected' : ''}>${v || '自动检测'}</option>`).join('');
   },
 
   updateMatchResults() {
@@ -359,7 +351,7 @@ const BatchPage = {
       <div class="card" style="margin-top:12px;background:var(--success-bg)">
         <strong>批量处理完成:</strong> ✅ ${successCount} / ❌ ${failCount}
         <button class="btn btn-primary" style="margin-left:12px" onclick="App.navigate('reports')">📋 查看报告列表</button>
-        <button class="btn" style="margin-left:8px" onclick="window.open('/api/export/reports/xlsx','_blank')">📥 导出Excel</button>
+        <span class="badge badge-primary" style="margin-left:8px">结果仅站内查看</span>
       </div>`);
 
     this.state.processing = false;
