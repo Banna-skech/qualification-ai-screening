@@ -5,7 +5,7 @@
 <p>
   <a href="https://banna-skech.github.io/qualification-ai-screening/"><img src="https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-5b5ce2?style=flat-square" alt="Live Demo"></a>
   <a href="https://github.com/Banna-skech/qualification-ai-screening/actions"><img src="https://img.shields.io/github/actions/workflow/status/Banna-skech/qualification-ai-screening/pages/pages-build-deployment?style=flat-square&label=Pages" alt="Pages build"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-169b78?style=flat-square" alt="MIT License"></a>
+  <img src="https://img.shields.io/badge/license-MIT-169b78?style=flat-square" alt="MIT License">
   <img src="https://img.shields.io/badge/data-synthetic%20demo-c77b16?style=flat-square" alt="Synthetic demo data">
 </p>
 
